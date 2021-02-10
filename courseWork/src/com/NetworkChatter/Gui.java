@@ -77,7 +77,7 @@ public class Gui extends JFrame {
 		textPort.setColumns(10);
 		textPort.setBounds(70, 162, 154, 20);
 		contentPane.add(textPort);
-		
+		//updated
 		lblPort = new JLabel("Port:");
 		lblPort.setBounds(114, 146, 66, 14);
 		contentPane.add(lblPort);
