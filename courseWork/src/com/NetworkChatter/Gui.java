@@ -22,6 +22,8 @@ public class Gui extends JFrame {
 	private JLabel lblName;
 	private JTextField textPort;
 	private JLabel lblPort;
+	private JTextField textServerPort;
+	private JTextField textServerIP;
 
 	
 	public static void main(String[] args) {
@@ -48,7 +50,7 @@ public class Gui extends JFrame {
 		setResizable(false);
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(290,330);
+		setSize(290,400);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -56,30 +58,30 @@ public class Gui extends JFrame {
 		contentPane.setLayout(null);
 		
 		textName = new JTextField();
-		textName.setBounds(70, 35, 154, 20);
+		textName.setBounds(84, 44, 154, 20);
 		contentPane.add(textName);
 		textName.setColumns(10);
 		
-		JLabel lblNIPAddress = new JLabel("IP Address:");
-		lblNIPAddress.setBounds(114, 85, 66, 14);
+		JLabel lblNIPAddress = new JLabel("IP Address to listen to:");
+		lblNIPAddress.setBounds(104, 79, 113, 14);
 		contentPane.add(lblNIPAddress);
 		
 		textAddress = new JTextField();
-		textAddress.setBounds(70, 100, 154, 20);
+		textAddress.setBounds(84, 108, 154, 20);
 		contentPane.add(textAddress);
 		textAddress.setColumns(10);
 		
-		lblName = new JLabel("Name:");
-		lblName.setBounds(124, 21, 46, 14);
+		lblName = new JLabel("Name(ID):");
+		lblName.setBounds(134, 15, 54, 14);
 		contentPane.add(lblName);
 		
 		textPort = new JTextField();
 		textPort.setColumns(10);
-		textPort.setBounds(70, 162, 154, 20);
+		textPort.setBounds(84, 172, 154, 20);
 		contentPane.add(textPort);
 		//updated
-		lblPort = new JLabel("Port:");
-		lblPort.setBounds(114, 146, 66, 14);
+		lblPort = new JLabel("Port to listen to:");
+		lblPort.setBounds(121, 143, 80, 14);
 		contentPane.add(lblPort);
 		
 		JButton btnNewButton = new JButton("Login");
@@ -93,8 +95,26 @@ public class Gui extends JFrame {
 
 			
 		});
-		btnNewButton.setBounds(99, 239, 89, 23);
+		btnNewButton.setBounds(116, 335, 89, 23);
 		contentPane.add(btnNewButton);
+		
+		textServerPort = new JTextField();
+		textServerPort.setBounds(84, 236, 154, 20);
+		contentPane.add(textServerPort);
+		textServerPort.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("port of server:");
+		lblNewLabel.setBounds(121, 207, 80, 14);
+		contentPane.add(lblNewLabel);
+		
+		textServerIP = new JTextField();
+		textServerIP.setBounds(84, 300, 154, 20);
+		contentPane.add(textServerIP);
+		textServerIP.setColumns(10);
+		
+		JLabel lblNewLabel_1 = new JLabel("Address of server:");
+		lblNewLabel_1.setBounds(110, 271, 101, 14);
+		contentPane.add(lblNewLabel_1);
 	}
 	
 	
@@ -103,6 +123,4 @@ public class Gui extends JFrame {
 		new Client(name, address, port);
 		
 	}
-
-
 }

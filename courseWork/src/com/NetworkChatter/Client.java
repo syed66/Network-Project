@@ -5,13 +5,23 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.DefaultCaret;
+
 import java.awt.GridBagLayout;
 import javax.swing.JTextArea;
 import java.awt.GridBagConstraints;
 import javax.swing.JButton;
 import java.awt.Insets;
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Client extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -22,14 +32,16 @@ public class Client extends JFrame {
 	private String address;
 	private int port;
 	private JTextField txtMessage;
+	private JTextArea history;
 	
-
 	public Client(String name, String address, int port) {
 		setTitle("Network Client");
 		this.name = name;
 		this.address = address;
 		this.port = port;
 		createWindow();
+		console("Attempting a connection to " + address + ":"+port +" user: "+ name);
+
 	}
 	
 	private void createWindow() {
@@ -47,18 +59,29 @@ public class Client extends JFrame {
 		gbl_contentPane.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		JTextArea txtrHistory = new JTextArea();
-		txtrHistory.setEditable(false);
-		GridBagConstraints gbc_txtrHistory = new GridBagConstraints();
-		gbc_txtrHistory.insets = new Insets(0, 0, 5, 5);
-		gbc_txtrHistory.fill = GridBagConstraints.BOTH;
-		gbc_txtrHistory.gridx = 1;
-		gbc_txtrHistory.gridy = 1;
-		gbc_txtrHistory.gridwidth =2;
-		gbc_txtrHistory.insets=new Insets(0,5,0,0);
-		contentPane.add(txtrHistory, gbc_txtrHistory);
+		history = new JTextArea();
+		history.setEditable(false);
+		
+		//putting text area in scrollpane
+		JScrollPane scroll = new JScrollPane(history);
+		GridBagConstraints scrollConstraints = new GridBagConstraints();
+		scrollConstraints.insets = new Insets(0, 0, 5, 5);
+		scrollConstraints.fill = GridBagConstraints.BOTH;
+		scrollConstraints.gridx = 1;
+		scrollConstraints.gridy = 1;
+		scrollConstraints.gridwidth =2;
+		scrollConstraints.insets=new Insets(0,5,0,0);
+		contentPane.add(scroll, scrollConstraints);
 		
 		txtMessage = new JTextField();
+		txtMessage.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				//if the enter button is pressed in the text field the message will be sent to the console directly
+				if (e.getKeyCode() == KeyEvent.VK_ENTER){
+					send(txtMessage.getText());
+				}
+			}
+		});
 		GridBagConstraints gbc_txtMessage = new GridBagConstraints();
 		gbc_txtMessage.insets = new Insets(0, 0, 0, 5);
 		gbc_txtMessage.fill = GridBagConstraints.HORIZONTAL;
@@ -68,6 +91,14 @@ public class Client extends JFrame {
 		txtMessage.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Send");
+		//when send button i s clicked the text entered will appear in the console
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//getting text from input field
+				String message= txtMessage.getText();
+				send(message);
+			}
+		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton.gridx = 2;
@@ -75,5 +106,26 @@ public class Client extends JFrame {
 		contentPane.add(btnNewButton, gbc_btnNewButton);
 		
 		setVisible(true);
+		txtMessage.requestFocusInWindow();
+	}
+		
+	private void send(String message){
+		//time stamp
+		String timeStamp = new SimpleDateFormat("HH:mm").format(new Date());
+
+		//checking for empty message
+		if(message.equals("")) return;
+		message=timeStamp+ "  "+name + ": " + message;
+		//displaying message to console
+		console(message);
+		//clearing input field after text sent
+		txtMessage.setText("");
+	}
+	
+	public void console(String message) {
+		history.append(message +"\n");
+		//setting caret position so that window scrolls to default position every time message is sent or received
+		history.setCaretPosition(history.getDocument().getLength());
+
 	}
 }
