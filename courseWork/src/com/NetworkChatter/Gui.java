@@ -62,7 +62,7 @@ public class Gui extends JFrame {
 		contentPane.add(textName);
 		textName.setColumns(10);
 		
-		JLabel lblNIPAddress = new JLabel("IP Address to listen to:");
+		JLabel lblNIPAddress = new JLabel("IP Address of server:");
 		lblNIPAddress.setBounds(104, 79, 113, 14);
 		contentPane.add(lblNIPAddress);
 		
@@ -80,7 +80,7 @@ public class Gui extends JFrame {
 		textPort.setBounds(84, 172, 154, 20);
 		contentPane.add(textPort);
 		//updated
-		lblPort = new JLabel("Port to listen to:");
+		lblPort = new JLabel("Port of server:");
 		lblPort.setBounds(121, 143, 80, 14);
 		contentPane.add(lblPort);
 		
@@ -103,7 +103,7 @@ public class Gui extends JFrame {
 		contentPane.add(textServerPort);
 		textServerPort.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("port of server:");
+		JLabel lblNewLabel = new JLabel("port to listen to:");
 		lblNewLabel.setBounds(121, 207, 80, 14);
 		contentPane.add(lblNewLabel);
 		
@@ -112,7 +112,7 @@ public class Gui extends JFrame {
 		contentPane.add(textServerIP);
 		textServerIP.setColumns(10);
 		
-		JLabel lblNewLabel_1 = new JLabel("Address of server:");
+		JLabel lblNewLabel_1 = new JLabel("Address to listen to:");
 		lblNewLabel_1.setBounds(110, 271, 101, 14);
 		contentPane.add(lblNewLabel_1);
 	}
