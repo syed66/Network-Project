@@ -18,6 +18,7 @@ public class ServerMain {
 		}
 		//converting port cli argument entered into integer 
 		port = Integer.parseInt(args[0]);
+		//starting server with port argument inputted
 		new ServerMain(port);
 	}
 }

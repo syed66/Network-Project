@@ -1,9 +1,17 @@
 package com.NetworkChatter.server;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server implements Runnable{
+	//saving client details in list as multiple clientServer classes
+	private List<ClientServer> clients=new ArrayList<ClientServer>();
+	
+	
 	private DatagramSocket socket;
 	private int port;
 	//creating thread for running server
@@ -23,14 +31,18 @@ public class Server implements Runnable{
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return;
 		}
 		run=new Thread(this,"Server");
+		run.start();
 	}
 
 	public void run() {
 		running =true;
+		System.out.println("Server started on port "+ port);
 		manageClients();
 		receive();
+	
 	}
 	
 	//function to manage client 
@@ -56,7 +68,21 @@ public class Server implements Runnable{
 			public void run() {
 				while (running) {
 					//receiving data
-					
+					//storing we receive in bytes
+					byte[] data =new byte[1024];
+					DatagramPacket packet= new DatagramPacket(data,data.length);
+					try {
+						socket.receive(packet);
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					//process packet
+					process(packet);
+					clients.add(new ClientServer("shahzeb",packet.getAddress(),packet.getPort(),50));
+					System.out.println(clients.get(0).address.toString() + ":" + clients.get(0).port);
+			
 				}
 			}
 		};
@@ -64,6 +90,18 @@ public class Server implements Runnable{
 		receive.start();
 	}
 	
+	//processing data
+	private void process(DatagramPacket packet) {
+		//data received
+		String string=new String(packet.getData());
+		//if user makes a connection request to be added to members list
+		if (string.startsWith("/c/")) {
+			clients.add(new ClientServer(string.substring(3,string.length()),packet.getAddress(),packet.getPort(),50));
+			System.out.println(string.substring(3,string.length()));
+		}else {
+			System.out.println(string);
+		}
+	}
 	
 	
 	

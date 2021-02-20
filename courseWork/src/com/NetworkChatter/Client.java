@@ -37,13 +37,15 @@ public class Client extends JFrame {
 	private String name;
 	private String address;
 	private int port;
+	private InetAddress ip;
+
+	
 	private JTextField txtMessage;
 	private JTextArea history;
 	
 	// intialising client socket
 	private DatagramSocket socket;
 	//initalising ip adress variable
-	private InetAddress ip;
 	
 	private Thread send;
 	
@@ -53,7 +55,7 @@ public class Client extends JFrame {
 		this.address = address;
 		this.port = port;
 		//checking connection
-		boolean connect=openConnection(address,port);
+		boolean connect=openConnection(address);
 		if (!connect) {
 			System.err.println("Connection failed!");
 		}
@@ -61,6 +63,8 @@ public class Client extends JFrame {
 		
 		createWindow();
 		console("Attempting a connection to " + address + ":"+port +" user: "+ name);
+		String connection="/c/" + name;
+		send(connection.getBytes());
 
 	}
 	
@@ -102,9 +106,10 @@ public class Client extends JFrame {
 		send.start();
 	}
 	
-	private boolean openConnection(String address,int port) {
+	private boolean openConnection(String address) {
 		try {
-			socket= new DatagramSocket(port);
+			//add port to listen to text in socket MAYBE?
+			socket= new DatagramSocket();
 			ip= InetAddress.getByName(address);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -195,6 +200,8 @@ public class Client extends JFrame {
 		message=timeStamp+ "  "+name + ": " + message;
 		//displaying message to console
 		console(message);
+		//returns a byte array of the string message to send to server
+		send(message.getBytes());
 		//clearing input field after text sent
 		txtMessage.setText("");
 	}
